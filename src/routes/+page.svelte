@@ -1,8 +1,14 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import "../app.css";
+
+  const images = ["img-1.svg", "img-2.png", "img-3.svg"];
   let num1 = 0;
   let num2 = 0;
+  let image = "";
   function init() {
+    const imageIndex = Math.floor(Math.random() * images.length);
+    image = images[imageIndex];
     num1 = Math.floor(Math.random() * 5) + 1;
     num2 = Math.floor(Math.random() * 5) + 1;
     const rightAnswerIndex = Math.floor(Math.random() * 3);
@@ -25,7 +31,7 @@
     return wrongAnswer;
   }
 
-  let choices = init();
+  let choices: number[] = [];
   let isAnswerCorrect: boolean | null = null;
   function handleAnswer(answer: number) {
     if (answer === num1 + num2) {
@@ -41,6 +47,10 @@
       isAnswerCorrect = null;
     }, 4000);
   }
+
+  onMount(() => {
+    choices = init();
+  });
 </script>
 
 <audio id="yay-audio" src="yay.mp3" preload="auto"></audio>
@@ -236,7 +246,7 @@
 
 <div class="flex gap-1 pt-20 justify-center">
   {#each { length: num1 } as _, i}
-    <img class="w-[100px]" src="img-1.svg" alt="kipasmatika" />
+    <img class="w-[100px]" src={image} alt="kipasmatika" />
   {/each}
 </div>
 
@@ -244,7 +254,7 @@
 
 <div class="flex gap-1 justify-center">
   {#each { length: num2 } as _, i}
-    <img class="w-[100px]" src="img-1.svg" alt="kipasmatika" />
+    <img class="w-[100px]" src={image} alt="kipasmatika" />
   {/each}
 </div>
 
